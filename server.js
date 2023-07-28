@@ -1,12 +1,15 @@
+// configuring .env
+const dotenv = require("dotenv");
+dotenv.config();
+
 // express
 const express = require("express");
 const app = express();
-const PORT = 5000;
-// const formidable = require("formidable")
+const PORT = process.env.PORT || 5000;
 
 // connecting to db
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://127.0.0.1:27017/mini", {
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -18,16 +21,11 @@ db.once("open", () => console.log("Connection Established"));
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 app.use(morgan("dev"));
-// app.use(formidable({ multiples: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // static folder for routes
 app.use("/uploads", express.static("uploads"));
-
-// configuring .env
-const dotenv = require("dotenv");
-dotenv.config();
 
 // importing and mouting routes
 const authRoutes = require("./routes/auth.routes");
