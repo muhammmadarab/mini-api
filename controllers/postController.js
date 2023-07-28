@@ -1,4 +1,5 @@
 const Post = require("../models/post");
+const User = require("../models/user")
 
 const createPost = async (req, res) => {
   try {
@@ -38,44 +39,6 @@ const createPost = async (req, res) => {
     res.status(500).json({ error: "Failed to create the post" });
   }
 };
-// const createPost = async (req, res) => {
-//   try {
-//     const userId = req.userData.userId;
-//     const { description, location, tags } = req.body;
-
-//     if (!req.file)
-//       return res
-//         .status(400)
-//         .json({ error: "Can't post without attachment of file" });
-
-//     if (!tags || tags == "")
-//       return res.status(400).json({ error: "Tag is required" });
-
-//     const mediaURL = req.file.filename;
-
-//     let type;
-//     if (req.file.mimetype.startsWith("image/")) type = "photo";
-//     else if (req.file.mimetype.startsWith("video/")) type = "video";
-//     else return res.status(400).json({ error: "Unsupported file type" });
-
-//     const newPost = new Post({
-//       userId,
-//       description,
-//       location,
-//       tags: tags.split(","),
-//       type,
-//       mediaURL,
-//     });
-
-//     const savedPost = await newPost.save();
-
-//     res
-//       .status(201)
-//       .json({ message: "Post created successfully", post: savedPost });
-//   } catch (err) {
-//     res.status(500).json({ error: "Failed to create the post" });
-//   }
-// };
 
 const getAllPosts = async (req, res) => {
   try {
@@ -93,16 +56,17 @@ const getPostById = async (req, res) => {
 
     const post = await Post.findById(postId);
 
-    console.log(post);
-
     if (!post) return res.status(404).json({ error: "Post not found" });
 
     // getting the total likes count
     const likeCount = post.likes.length;
 
+    const likedUsers = likeCount !== 0 ? await User.find({ _id: { $in: post.likes } }).select("username name") : [];
+
     const postWithLikeInfo = {
       ...post._doc,
       likeCount,
+      likedUsers,
     };
 
     res.status(200).json({ post: postWithLikeInfo });
