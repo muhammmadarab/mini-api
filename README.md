@@ -30,6 +30,8 @@ Create a `.env` file in the root directory and set the following environment var
 PORT=5000
 MONGODB_URI=mongodb://127.0.0.1:27017/mini
 ACCESS_TOKEN_SECRET=your_access_token_secret
+ACCESS_TOKEN_EXPIRE_TIME=2h
+REFRESH_TOKEN_EXPIRE_TIME=7d
 ```
 
 Replace `your_access_token_secret` with your preferred secret for JWT token generation.
