@@ -36,7 +36,9 @@ REFRESH_TOKEN_EXPIRE_TIME=7d
 
 Replace `your_access_token_secret` with your preferred secret for JWT token generation.
 
-4. Run the application:
+4. Create two directories named `uploads` and `profiles` in the root folder to store uploaded files and user profile pictures.
+
+5. Run the application::
 
 ```bash
 npm start
@@ -48,6 +50,7 @@ The server will start running at `http://localhost:5000`.
 
 - `POST /api/auth/signup`: Register a new user. Required parameters: `username`, `email`, `name` and `password`.
 - `POST /api/auth/login`: Log in an existing user. Required parameters: `username` and `password`.
+- `POST /api/refresh-token`: Refresh the access token for a user using a valid refresh token in the request body. If the refresh token is valid, a new access token will be generated and returned in the response.
 - `GET /api/post`: Get all posts (Requires authentication).
 - `GET /api/post/:id`: Get a post by ID (Requires authentication).
 - `POST /api/post/create`: Create a new post (Requires authentication and a media file upload). Supported media types: images and videos.
