@@ -9,6 +9,6 @@ const uploadProfilePicture = require("../middlewares/uploadProfilePicture");
 
 router.post("/signup", uploadProfilePicture, signup);
 router.post("/login", login);
-router.post("/refresh", refreshToken);
+router.post("/refresh-token", refreshToken);
 
 module.exports = router;
