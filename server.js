@@ -2,20 +2,25 @@
 const dotenv = require("dotenv");
 dotenv.config();
 
-// express
-const express = require("express");
-const app = express();
-const PORT = process.env.PORT || 5000;
-
 // connecting to db
+const dbUrl = process.env.MONGODB_URI;
 const mongoose = require("mongoose");
-mongoose.connect(process.env.MONGODB_URI, {
+mongoose.connect(dbUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 const db = mongoose.connection;
 db.on("error", (err) => console.log(err));
 db.once("open", () => console.log("Connection Established"));
+
+// express
+const express = require("express");
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// cors
+const cors = require('cors');
+app.use(cors());
 
 // setting up middlewares
 const morgan = require("morgan");
