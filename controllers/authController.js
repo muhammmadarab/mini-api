@@ -6,7 +6,8 @@ const {
   isPasswordValid,
   isEmailValid,
   isNameValid,
-} = require("../validators/authValidators");
+} = require("../utils/authValidators");
+const { createAccessToken, createRefreshToken } = require('../utils/jwtUtils');
 
 const signup = async (req, res) => {
   try {
@@ -87,22 +88,8 @@ const login = async (req, res) => {
       return res.status(401).json({ error: "Invalid password" });
 
     // Creating JWT for access token
-    const accessToken = jwt.sign(
-      { userId: user._id },
-      process.env.ACCESS_TOKEN_SECRET,
-      {
-        expiresIn: process.env.ACCESS_TOKEN_EXPIRE_TIME,
-      }
-    );
-
-    // Creating JWT for refresh token
-    const refreshToken = jwt.sign(
-      { userId: user._id },
-      process.env.ACCESS_TOKEN_SECRET,
-      {
-        expiresIn: rememberMe ? process.env.REFRESH_TOKEN_EXPIRE_TIME : "1d",
-      }
-    );
+    const accessToken = createAccessToken(user);
+    const refreshToken = createRefreshToken(user);
 
     // Saving the refresh token to the database
     if (rememberMe) {
@@ -113,7 +100,13 @@ const login = async (req, res) => {
     // Respondind with the JWT tokens
     res
       .status(200)
-      .json({ message: "Login successful", accessToken, refreshToken });
+      .json({ message: "Login successful", accessToken });
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      // secure: true,
+    });
   } catch (err) {
     res.status(500).json({ error: "Failed to login" });
   }
@@ -121,12 +114,15 @@ const login = async (req, res) => {
 
 const refreshToken = async (req, res) => {
   try {
-    const { refreshToken } = req.body;
+    const { refreshToken } = req.cookies;
+
+    if (!refreshToken)
+      return res.status(401).json({ error: "Refresh token not found" });
 
     // Verifying the refresh token
     const decodedToken = jwt.verify(
       refreshToken,
-      process.env.ACCESS_TOKEN_SECRET
+      process.env.REFRESH_TOKEN_SECRET
     );
 
     const userId = decodedToken.userId;
@@ -140,13 +136,7 @@ const refreshToken = async (req, res) => {
       return res.status(401).json({ error: "Invalid refresh token" });
 
     // Generating a new access token
-    const accessToken = jwt.sign(
-      { userId: user._id },
-      process.env.ACCESS_TOKEN_SECRET,
-      {
-        expiresIn: process.env.ACCESS_TOKEN_EXPIRE_TIME,
-      }
-    );
+    const accessToken = createAccessToken(user);
 
     // Respond with the new access token
     res.status(200).json({ accessToken });
