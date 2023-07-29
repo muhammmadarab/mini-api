@@ -98,21 +98,22 @@ const login = async (req, res) => {
     }
 
     // Respondind with the JWT tokens
-    res
-      .status(200)
-      .json({ message: "Login successful", accessToken });
-
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       maxAge: 30 * 24 * 60 * 60 * 1000,
       // secure: true,
     });
+    res
+      .status(200)
+      .json({ message: "Login successful", accessToken });
+
   } catch (err) {
     res.status(500).json({ error: "Failed to login" });
   }
 };
 
 const refreshToken = async (req, res) => {
+  console.log(req.cookies)
   try {
     const { refreshToken } = req.cookies;
 

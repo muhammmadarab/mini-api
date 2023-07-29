@@ -25,9 +25,11 @@ app.use(cors());
 // setting up middlewares
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
+const cookieParser = require('cookie-parser');
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 // static folder for routes
 app.use("/uploads", express.static("uploads"));
