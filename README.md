@@ -57,6 +57,14 @@ The server will start running at `http://localhost:5000`.
 - `PUT /api/post/update/:id`: Update a post by ID (Requires authentication).
 - `DELETE /api/post/delete/:id`: Delete a post by ID (Requires authentication).
 - `POST /api/post/:id/like`: Like/unlike a post by ID (Requires authentication).
+- `GET /api/user/:id`: Get User Details by ID (Requires Authentication)
+
+## Static File Server
+
+The server is also configured to serve static files for media content and user profile pictures. The following endpoints are used for static file serving:
+
+- `/uploads`: This endpoint serves files from the "uploads" directory. It is used to serve media files.
+- `/user/profile`: This endpoint serves files from the "profiles" directory. It is used to serve user profile pictures.
 
 ## Middleware
 
@@ -70,6 +78,6 @@ The server will start running at `http://localhost:5000`.
 - `middlewares`: Contains custom middleware functions.
 - `models`: Contains the MongoDB schema models.
 - `routes`: Contains the API route definitions.
-- `validators`: Contains the Validation definitions.
+- `utils`: Contains the utility functions.
 - `uploads`: Directory to store uploaded media files (images and videos).
 - `profiles`: Directory to store profile pictures (images).
