@@ -33,12 +33,15 @@ app.use(cookieParser());
 
 // static folder for routes
 app.use("/uploads", express.static("uploads"));
+app.use("/user/profile", express.static("profiles"));
 
 // importing and mouting routes
 const authRoutes = require("./routes/auth.routes");
 const postRoutes = require("./routes/post.routes.js");
+const userRoutes = require("./routes/user.routes.js");
 app.use("/api/auth", authRoutes);
 app.use("/api/post", postRoutes);
+app.use("/api/user", userRoutes);
 
 // starting the server
 app.listen(PORT, () => {
