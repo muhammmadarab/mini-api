@@ -61,7 +61,7 @@ const getPostById = async (req, res) => {
     // getting the total likes count
     const likeCount = post.likes.length;
 
-    const likedUsers = likeCount !== 0 ? await User.find({ _id: { $in: post.likes } }).select("username name") : [];
+    const likedUsers = likeCount !== 0 ? await User.find({ _id: { $in: post.likes } }).select("username name profilePicture") : [];
 
     const postWithLikeInfo = {
       ...post._doc,
