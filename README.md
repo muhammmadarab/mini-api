@@ -2,9 +2,19 @@
 
 Mini Social Media is a simple social media application backend built with Node.js, Express, and MongoDB. It provides API endpoints to handle user authentication, post creation, retrieval, and interactions.
 
+## Table of Contents
+
+- [Prerequisites](#prerequisites)
+- [Getting Started](#getting-started)
+- [API Endpoints](#getting-started)
+- [Static File Server](#static-file-server)
+- [Middleware](#middleware)
+- [File Structure](#file-structure)
+- [Conclusion](#conclusion)
+
 ## Prerequisites
 
-- Node.js (v14 or later)
+- Node.js
 - MongoDB (Make sure your MongoDB server is running)
 
 ## Getting Started
@@ -26,7 +36,7 @@ npm install
 
 Create a `.env` file in the root directory and set the following environment variables:
 
-```
+```bash
 PORT=5000
 MONGODB_URI=mongodb://127.0.0.1:27017/mini
 ACCESS_TOKEN_SECRET=your_access_token_secret
@@ -36,9 +46,11 @@ REFRESH_TOKEN_EXPIRE_TIME=7d
 
 Replace `your_access_token_secret` with your preferred secret for JWT token generation.
 
-4. Create two directories named `uploads` and `profiles` in the root folder to store uploaded files and user profile pictures.
+4. Create Directories for Uploaded Files and User Profile Pictures
 
-5. Run the application::
+Create two directories named `uploads` and `profiles` in the root folder to store uploaded files and user profile pictures.
+
+5. Run the application:
 
 ```bash
 npm start
@@ -50,7 +62,7 @@ The server will start running at `http://localhost:5000`.
 
 - `POST /api/auth/signup`: Register a new user. Required parameters: `username`, `email`, `name` and `password`.
 - `POST /api/auth/login`: Log in an existing user. Required parameters: `username` and `password`.
-- `POST /api/refresh-token`: Refresh the access token for a user using a valid refresh token in the request body. If the refresh token is valid, a new access token will be generated and returned in the response.
+- `POST /api/auth/refresh-token`: Refresh the access token for a user using a valid refresh token in the request body. If the refresh token is valid, a new access token will be generated and returned in the response.
 - `GET /api/post`: Get all posts (Requires authentication).
 - `GET /api/post/:id`: Get a post by ID (Requires authentication).
 - `POST /api/post/create`: Create a new post (Requires authentication and a media file upload). Supported media types: images and videos.
@@ -81,3 +93,7 @@ The server is also configured to serve static files for media content and user p
 - `utils`: Contains the utility functions.
 - `uploads`: Directory to store uploaded media files (images and videos).
 - `profiles`: Directory to store profile pictures (images).
+
+## Conclusion
+
+The Mini Social Media Backend provides a scalable API for user authentication and post management. It uses Node.js, Express, and MongoDB for efficiency. The API supports registration, login, post creation, and interaction with posts. JWT ensures secure authentication, and the server serves static files for media content and user profile pictures.
